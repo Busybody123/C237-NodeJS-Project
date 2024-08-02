@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/styleQuiz.css" rel="stylesheet">
+    <title>Quiz app</title>
+</head>
+
+<body>
+    <%- include ('partials/navbar.ejs') %>
+    <br><br><br>
+
+    <div class="container">
+        <div class="card rounded">
+            <div class="d-flex justify-content-between align-items-center" id="header-container">
+                <div class="card-header bg-white">
+                    <h3 class="card-title mt-3 mb-4">
+                        <%= question.quiz_name %>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <% if (question.image) { %>
+                        <img src="/images/<%= question.image %>" width="30%">
+                    <% } %>
+                </div>
+
+                <h4 class="my-3 pb-3" id="quizQuestion">
+                    <%= question.questionId %>. <%= question.question %>
+                </h4>
+
+                <div class="row row-cols-2 g-3">
+                    <% question.options.forEach((option, i)=> { %>
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-dark optionButton" data-index="<%= i %>">
+                                <%= option %>
+                            </button>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+            <div class="card-footer py-3 mx-3 d-flex justify-content-center align-items-center">
+                <a href="/startQuiz/<%= question.quizId %>/<%= question.questionId+1 %>" style="visibility: hidden;" id="nextButton"
+                    class="card-link">Next</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const buttons = document.querySelectorAll('.optionButton');
+        const answerIndex = parseInt("<%= question.answer-1 %>");
+        const nextButton = document.querySelector('#nextButton');
+        let score = 0;
+
+        buttons.forEach((button, j) => {
+            button.addEventListener('click', () => {
+                if (j == answerIndex) {
+                    button.classList.remove('btn-outline-dark');
+                    button.classList.add('btn-success');
+                } else {
+                    button.classList.remove('btn-outline-dark');
+                    button.classList.add('btn-danger');
+                    buttons[answerIndex].classList.remove('btn-outline-dark');
+                    buttons[answerIndex].classList.add('btn-success');
+                }
+                buttons.forEach(btn => btn.disabled = true);
+
+                nextButton.style.visibility = 'visible'
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

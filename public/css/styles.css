@@ -1,0 +1,13 @@
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 200px; /* Adjust the height as needed */
+    object-fit: cover; /* Prevent stretching and maintain aspect ratio */
+}
+
+a, .card-link {
+    text-decoration: none;
+    font-weight: 700;
+}
